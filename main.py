@@ -7,6 +7,7 @@ from auth import authenticate_user, create_access_token, ACCESS_TOKEN_EXPIRE_MIN
 from datetime import timedelta
 from sqlalchemy.orm import Session
 from database import get_db
+import uvicorn
 
 # Bazani yaratish
 Base.metadata.create_all(bind=engine)
@@ -29,3 +30,6 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
         {"sub": user.username, "role": user.role}, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="localhost", port=8000, log_level="info", reload=True)

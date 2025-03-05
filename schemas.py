@@ -5,6 +5,9 @@ class UserCreate(BaseModel):
     password: str
     role: str = "user"
 
+class UserDelete(UserCreate):
+    pass
+
 class RelayModuleCreate(BaseModel):
     ip_address: str
     port: int

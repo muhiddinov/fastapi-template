@@ -13,6 +13,9 @@ def create_user(db: Session, username: str, password: str, role: str = "user"):
 def get_users(db: Session):
     return db.query(User).all()
 
+def delete_users(db: Session):
+    return db.delete(User)
+
 def create_relay_module(db: Session, ip_address: str, port: int, name: str, relays_count: int):
     db_module = RelayModule(ip_address=ip_address, port=port, name=name, relays_count=relays_count)
     db.add(db_module)
