@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database import get_db
-from auth import authenticate_user, create_access_token
 from crud import create_user, get_users
 from schemas import UserCreate
 from dependencies import get_current_admin_user
