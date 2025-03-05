@@ -19,13 +19,6 @@ class RelayCreate(BaseModel):
     relay_number: int
     status: bool
 
-# 🔹 Relay Module yaratish uchun schema
-class RelayModuleCreate(BaseModel):
-    ip_address: str
-    port: int
-    name: str
-    relays_count: int
-
 # 🔹 Relay Module javob schema (DB dan o'qish uchun)
 class RelayModuleResponse(RelayModuleCreate):
     id: int
