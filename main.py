@@ -1,12 +1,11 @@
 from fastapi import FastAPI, Depends, HTTPException, status
-from database import engine, Base
+from database import engine, Base, get_db
 from routes import users, relay_modules, relays
 from utils import init_admin
 from fastapi.security import OAuth2PasswordRequestForm
 from auth import authenticate_user, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta
 from sqlalchemy.orm import Session
-from database import get_db
 import uvicorn
 
 # Bazani yaratish
