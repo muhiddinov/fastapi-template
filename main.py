@@ -37,8 +37,8 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             message = await websocket.receive_text()
-            if message == "get_status":
-                await websocket.send_text(json.dumps(wash_status))
+            for client in clients:
+                await client.send_text(json.dumps({"host": "server", "data": message}))
     except WebSocketDisconnect:
         clients.remove(websocket)
 
