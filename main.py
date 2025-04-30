@@ -6,7 +6,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 from auth import authenticate_user, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta
 from sqlalchemy.orm import Session
+from fastapi.websockets import WebSocket, WebSocketDisconnect
 import uvicorn
+import json
 
 # Bazani yaratish
 Base.metadata.create_all(bind=engine)
@@ -18,6 +20,27 @@ init_admin()
 app.include_router(users.router)
 app.include_router(relay_modules.router)
 app.include_router(relays.router)
+
+clients = []
+wash_status = {
+    "status": "idle",  # 'idle', 'running', 'paused'
+    "active_option": None,
+    "balance": 0,
+    "remaining_time": 0,
+    "paused_time": 0
+}
+
+@app.websocket("/ws/status")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    clients.append(websocket)
+    try:
+        while True:
+            message = await websocket.receive_text()
+            if message == "get_status":
+                await websocket.send_text(json.dumps(wash_status))
+    except WebSocketDisconnect:
+        clients.remove(websocket)
 
 @app.post("/token")
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
